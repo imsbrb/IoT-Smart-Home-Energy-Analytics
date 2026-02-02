@@ -1,113 +1,132 @@
 # IoT Smart Home Energy Analytics 🏠⚡
 
-## Project Overview
+## 1. Project Overview
 
-This project focuses on building a comprehensive **Data Warehouse and Business Intelligence (BI)** solution to analyze energy consumption patterns in a low-energy house in Belgium. By integrating IoT sensor data (temperature and humidity) with outdoor weather conditions, the system provides actionable insights into what drives energy usage and identifies opportunities for efficiency.
+The **IoT Smart Home Energy Analytics** project implements a complete **Data Warehouse (DW) and Business Intelligence (BI)** solution to analyze and understand energy consumption patterns in a low-energy residential house located in Belgium.
 
----
-
-## 🛠 Tech Stack
-
-* 
-**Database:** PostgreSQL (Data Warehouse) 
-
-
-* 
-**BI Tool:** Power BI 
-
-
-* 
-**Languages:** SQL, DAX 
-
-
-* 
-**ETL Process:** Python/SQL for extraction, cleaning, and transformation 
-
-
+The primary objective of this project is to integrate **IoT sensor data** (indoor temperature and humidity) with **external weather conditions** and historical energy consumption records to uncover key drivers of energy usage. The system supports both high-level executive insights and detailed analytical exploration, enabling data-driven decisions to improve energy efficiency and detect abnormal consumption behavior.
 
 ---
 
-## 📊 Data Architecture
+## 2. Objectives
 
-The project utilizes a **Star Schema** design to optimize query performance for multidimensional analysis.
-
-### Schema Components:
-
-* 
-**Fact Tables:** `EnergyUsage_Fact` (Measures: Appliances Wh, Lights Wh, Avg Temperature, Avg Humidity).
-
-
-* 
-**Dimension Tables:** `Date_Dim`, `Time_Dim`, `Room_Dim`, and `Weather_Dim`.
-
-
+* Design a scalable **data warehouse** optimized for analytical workloads
+* Integrate heterogeneous data sources (IoT sensors, weather, energy usage)
+* Enable multidimensional analysis using a **star schema**
+* Optimize query performance using physical design techniques
+* Deliver interactive and insightful dashboards using **Power BI**
 
 ---
 
-## 🚀 Performance Optimizations
+## 3. Technology Stack
 
-To handle analytical workloads efficiently, several physical design techniques were implemented and tested:
+### 3.1 Data Storage
 
-| Technique | Improvement | Use Case |
-| --- | --- | --- |
-| **Materialized View** | **99.7%** | Best for high-level monthly dashboard aggregates.
+* **PostgreSQL** – Central data warehouse for structured analytical data
 
- |
-| **Bitmap Simulation** | **99.2%** | Optimized equality filters for low-cardinality columns (e.g., Windspeed).
+### 3.2 Business Intelligence
 
- |
-| **B-Tree Index** | **68.7%** | Accelerated range filters on time-series data.
+* **Power BI** – Dashboarding, reporting, and interactive data visualization
 
- |
-| **Vertical Partitioning** | N/A | Tested but found unsuitable due to join overhead on this dataset size.
+### 3.3 Programming & Query Languages
 
- |
+* **SQL** – Schema design, transformations, indexing, and analytical queries
+* **DAX** – Measures and calculated metrics in Power BI
+* **Python** – ETL scripting for data extraction, cleaning, and loading
 
----
+### 3.4 ETL Approach
 
-## 📈 Key Insights & BI Dashboards
-
-The Power BI dashboard provides a three-level hierarchy of analysis: **Executive KPIs**, **Trend Analysis**, and **Detailed Matrix** views.
-
-### Critical Findings:
-
-* 
-**Appliance Dominance:** Appliances account for **96%** of total energy usage, while lighting is negligible (4%).
-
-
-* 
-**Seasonal Peaks:** Consumption peaks during March and April (approx. 420-450 kWh), suggesting high HVAC activity during the spring transition.
-
-
-* 
-**Anomaly Detection:** Identified a significant **23.19% Month-over-Month growth** spike that may indicate device malfunction or seasonal shifts.
-
-
-* 
-**Weather Correlation:** While energy use increases with temperature, the relationship is non-linear, indicating other behavioral factors are at play.
-
-
+* Data extraction from raw IoT and weather datasets
+* Data cleansing and transformation using Python and SQL
+* Loading curated data into dimension and fact tables
 
 ---
 
-## 📂 Project Structure
+## 4. Data Architecture
 
-* 
-`/Proposal`: Initial project scope and schema design.
+The project follows a **Star Schema** design to ensure simplicity, performance, and flexibility for analytical queries.
 
+### 4.1 Fact Table
 
-* 
-`/ETL`: Scripts for data cleaning and loading.
+**EnergyUsage_Fact**
 
+Measures stored in the fact table:
 
-* 
-`/Optimization_Report`: Detailed analysis of indexing and partitioning performance.
+* Appliances Energy Consumption (Wh)
+* Lights Energy Consumption (Wh)
+* Average Indoor Temperature
+* Average Indoor Humidity
 
+### 4.2 Dimension Tables
 
-* 
-`/Dashboard`: Power BI `.pbix` files and insight summaries.
+* **Date_Dim** – Calendar attributes (day, month, quarter, year)
+* **Time_Dim** – Hourly and time-based analysis
+* **Room_Dim** – Room-level granularity within the house
+* **Weather_Dim** – Outdoor weather attributes (temperature, humidity, wind speed, etc.)
 
-
+This schema enables efficient slicing, dicing, drilling, and aggregation across multiple dimensions.
 
 ---
 
+## 5. Performance Optimization Techniques
+
+To support fast analytical queries and dashboard responsiveness, several physical optimization techniques were implemented and evaluated.
+
+| Optimization Technique  | Performance Improvement | Description & Use Case                                                                 |
+| ----------------------- | ----------------------- | -------------------------------------------------------------------------------------- |
+| Materialized Views      | **99.7%**               | Pre-aggregated monthly metrics for executive dashboards                                |
+| Bitmap Index Simulation | **99.2%**               | Optimized equality filters on low-cardinality attributes (e.g., wind speed categories) |
+| B-Tree Index            | **68.7%**               | Accelerated range-based queries on time-series data                                    |
+| Vertical Partitioning   | N/A                     | Tested but discarded due to join overhead on moderate dataset size                     |
+
+The results demonstrate that **pre-aggregation and indexing** significantly enhance performance for BI workloads.
+
+---
+
+## 6. Business Intelligence & Dashboards
+
+The Power BI dashboards are structured into a **three-tier analytical hierarchy**, ensuring accessibility for both technical and non-technical users.
+
+### 6.1 Executive KPI View
+
+* Total energy consumption
+* Appliance vs lighting energy distribution
+* Month-over-month growth indicators
+
+### 6.2 Trend Analysis View
+
+* Seasonal energy consumption patterns
+* Monthly and daily energy usage trends
+* Temperature and humidity impact analysis
+
+### 6.3 Detailed Matrix View
+
+* Room-level and time-level energy breakdown
+* Cross-dimensional comparisons
+* Drill-through analysis for anomaly investigation
+
+---
+
+## 7. Key Analytical Insights
+
+* **Appliance Energy Dominance:** Appliances contribute approximately **96%** of total energy consumption, while lighting accounts for only **4%**.
+* **Seasonal Consumption Peaks:** Energy usage peaks during **March and April (420–450 kWh)**, likely due to increased HVAC activity during seasonal transitions.
+* **Anomaly Detection:** A significant **23.19% month-over-month increase** was detected, indicating potential equipment malfunction or behavioral changes.
+* **Weather Correlation:** Although higher temperatures generally correspond to increased energy use, the relationship is **non-linear**, suggesting strong behavioral and occupancy influences.
+
+---
+
+## 8. Repository Structure
+
+* **/Proposal** – Initial project proposal, objectives, and conceptual schema design
+* **/ETL** – Python and SQL scripts for data extraction, transformation, and loading
+* **/Optimization_Report** – Detailed benchmarking and performance evaluation of optimization techniques
+* **/Dashboard** – Power BI (.pbix) files and summarized analytical insights
+
+---
+
+## 9. Conclusion
+
+This project demonstrates the effective use of **data warehousing, ETL pipelines, performance optimization, and BI analytics** to transform raw IoT data into meaningful insights. The solution highlights how analytical systems can support energy efficiency, anomaly detection, and informed decision-making in smart home environments.
+
+Future enhancements may include real-time streaming analytics, predictive modeling, and automated anomaly alerts.
